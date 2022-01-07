@@ -26,6 +26,7 @@ app.post("/data", (req, res) => {
   const body: CellData = req.body;
   store.push(body);
   console.log(store);
+  res.send();
 });
 
 app.listen(process.env.PORT, () => {
