@@ -18,8 +18,7 @@ class Watcher:
 
         # Session data
         self.url = url
-        # self.secret = input("Secret:")
-        self.secret = None
+        self.secret = input("Enter your secret:")
 
         # History
         self.raw_codes = []
@@ -44,7 +43,6 @@ class Watcher:
         self.lasterr = ""
         self.cap = self.capper.__enter__()
         self.hook = sys.displayhook
-
         
     def post_run_cell(self, result):
         # print(dir(result))
