@@ -1,4 +1,4 @@
-const SERVER = "localhost:3000";
+const SERVER = "http://localhost:3000";
 
 const routes = {
   root: "/",

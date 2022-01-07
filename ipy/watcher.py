@@ -45,5 +45,8 @@ def load_ipython_extension(ip):
     # The `ipython` argument is the currently active `InteractiveShell`
     # instance, which can be used in any way. This allows you to register
     # new magics or aliases, for example.
-    watcher = Watcher("https://webhook.site/b196f4df-fced-4aa2-828c-961325700bf2?", ip)
+    watcher = Watcher("http://localhost:3000/data", ip)
     ip.events.register('post_run_cell', watcher.send_result)
+
+def unload_ipython_extension(ip):
+    pass
