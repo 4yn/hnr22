@@ -1,4 +1,5 @@
 import types
+import sys
 
 import base64
 
@@ -26,6 +27,7 @@ class Watcher:
         # capture
         self.capper = capture_output()
         self.cap = self.capper.__enter__() # for first run
+        self.hook = sys.displayhook # for first run
 
         # Track stderr
         self.lasterr = ""
@@ -41,6 +43,7 @@ class Watcher:
     def pre_run_cell(self):
         self.lasterr = ""
         self.cap = self.capper.__enter__()
+        self.hook = sys.displayhook
 
         
     def post_run_cell(self, result):
@@ -49,61 +52,19 @@ class Watcher:
         cell_result = result.result
         cell_ok = result.success
 
+        self.hook(cell_result)
         self.capper.__exit__(None, None, None)
 
         self.raw_codes += [cell_code]
 
         self.egress({
+            "idx": len(self.raw_codes),
             "code": cell_code,
             "ok": cell_ok,
             "stdout": self.cap.stdout,
             "stderr": self.cap.stderr + self.lasterr,
-            "outputs": self.flatten_rich_outputs(self.cap.outputs + [RichOutput(cell_result)])
+            "outputs": [i.data for i in self.cap.outputs]
         })
-
-    def flatten_rich_outputs(self, rich_outputs):
-        res = []
-        for rich_output in rich_outputs:
-            data = rich_output.data
-            print(list(data.keys()))
-            if isinstance(data, Figure):
-                fig_b64 = base64.b64encode(rich_output._repr_jpeg_()).decode()
-
-                res.append({
-                    "type": "figure",
-                    "data": fig_b64
-                })
-            elif isinstance(data, str):
-                res.append({
-                    "type": "str",
-                    "data": data
-                })
-            elif isinstance(data, int):
-                res.append({
-                    "type": "int",
-                    "data": data
-                })
-            elif isinstance(data, float):
-                res.append({
-                    "type": "float",
-                    "data": data
-                })
-            elif isinstance(data, Exception):
-                res.append({
-                    "type": "error",
-                    "data": str(data)
-                })
-            elif data is None:
-                res.append({
-                    "type": "null",
-                    "data": None
-                })
-            else:
-                res.append({
-                    "type": "unknown",
-                    "data": str(data)
-                })
-        return res
 
     def egress(self, data):
         # print(str(data)[:1000])
