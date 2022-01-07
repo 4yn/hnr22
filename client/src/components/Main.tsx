@@ -7,16 +7,13 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Questions from "./Questions";
+import ChatLayout from "./ChatLayout";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
+      {"Copyright LOLLOLLOL © "}
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
@@ -30,19 +27,20 @@ export default function Main() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            My app name lol
+            Py-opticon
           </Typography>
         </Toolbar>
       </AppBar>
       <main>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          <Questions />
+        <Container sx={{ py: 8 }} maxWidth="xl">
+          {/* <Questions /> */}
+          <ChatLayout/>
         </Container>
       </main>
       {/* Footer */}
       <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          {/* Footer */}
         </Typography>
         <Typography
           variant="subtitle1"
@@ -50,7 +48,7 @@ export default function Main() {
           color="text.secondary"
           component="p"
         >
-          Something here to give the footer a purpose!
+          {/* Something here to give the footer a purpose! */}
         </Typography>
         <Copyright />
       </Box>
