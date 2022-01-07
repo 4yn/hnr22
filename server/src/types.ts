@@ -8,14 +8,14 @@ declare global {
 }
 
 interface CellData {
+  room: string;
   secret: string;
-  result: string;
-  type: DataType;
-  rawCode: string;
-}
-
-enum DataType {
-  IMG,
+  idx: number;
+  code: string;
+  ok: boolean;
+  stdout: string;
+  stderr: string;
+  outputs: Array<Map<string, string>>;
 }
 
 export { CellData };
