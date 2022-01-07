@@ -1,7 +1,5 @@
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -43,5 +41,4 @@ function DataCard({ cellData: { rawCode, result, secret, type } }: Input) {
   );
 }
 
-export { type CellData };
 export default DataCard;
