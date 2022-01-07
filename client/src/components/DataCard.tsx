@@ -4,13 +4,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-
-interface CellData {
-  secret: string;
-  result: string;
-  type: "img" | "code";
-  rawCode: string;
-}
+import { CellData } from "../requests";
 
 interface Input {
   cellData: CellData;
