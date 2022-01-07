@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
