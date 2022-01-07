@@ -1,18 +1,10 @@
 import {
-  Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
 } from "@mui/material";
-
-interface CellData {
-  secret: string;
-  result: string;
-  type: "img" | "code";
-  rawCode: string;
-}
+import { CellData } from "../requests";
 
 interface Input {
   cellData: CellData;
@@ -43,5 +35,4 @@ function DataCard({ cellData: { rawCode, result, secret, type } }: Input) {
   );
 }
 
-export { type CellData };
 export default DataCard;
