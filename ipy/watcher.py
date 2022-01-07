@@ -10,54 +10,50 @@ from contextlib import redirect_stderr
 
 import requests
 
+lasterr = ""
+
 class Watcher:
     def __init__(self, url, ip):
         self.raw_codes = []
         self.url = url
         self.shell = ip
         self.secret = None
-        self.stderr = StringIO("hello")
-        ip.log.handlers[0].stream = sys.stderr = self.stderr
+        self.stderr = StringIO()
         
-        ip._showtraceback_orig = ip._showtraceback
+        if not hasattr(get_ipython(), '_showtraceback_orig'):
+            # ip.log.handlers[0].stream = sys.stderr = self.stderr
+            ip._showtraceback_orig = ip._showtraceback
 
-        def _showtraceback(self, etype, evalue, stb):
-            self.stderr.write(self.InteractiveTB.stb2text(stb) + '\n')
-            self.stderr.flush()
-            self._showtraceback_orig(etype, evalue, stb)
+            def _showtraceback(self, etype, evalue, stb):
+                global lasterr
+                lasterr = self.InteractiveTB.stb2text(stb) + '\n'
+                self._showtraceback_orig(etype, evalue, stb)
 
-        ip._showtraceback = types.MethodType(_showtraceback, ip)
+            ip._showtraceback = types.MethodType(_showtraceback, ip)
         
     def send_result(self, result):
-        print(result)
         self.raw_codes += [result.info.raw_cell]
+        
         if self.secret == None:
             self.secret = self.shell.user_ns.get('secret', None)
             return
         
         if result.error_in_exec != None:
-            print(self.stderr.flush())
-            
+            print(lasterr)
+        
+        res_str = result.result
         if type(result.result) == Image.Image: # Special result type
             img_io = BytesIO()
             result.result.save(img_io, format='JPEG', quality=70)
-            img_str = base64.b64encode(img_io.getvalue())
+            res_str = base64.b64encode(img_io.getvalue())
             
-            requests.post(self.url, data = {
-                "secret": self.secret,
-                "type": "img",
-                "result": img_str,
-                "code": result.info.raw_cell,
-                "error": result.error_in_exec
-            })
-        else:
-            requests.post(self.url, data = {
-                "secret": self.secret,
-                "type": "text",
-                "result": result.result,
-                "code": result.info.raw_cell,
-                "error": result.error_in_exec
-            })
+        requests.post(self.url, data = {
+            "secret": self.secret,
+            "type": "img",
+            "result": res_str,
+            "code": result.info.raw_cell,
+            "error": "" if result.error_in_exec == None else base64.b64encode(lasterr.encode('ascii'))
+        })
 
 def load_ipython_extension(ip):
     # The `ipython` argument is the currently active `InteractiveShell`
