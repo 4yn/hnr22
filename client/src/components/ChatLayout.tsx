@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
@@ -40,7 +41,7 @@ export default function ChatLayout() {
     <Grid item xs={4} md={3} xl={2}>
       <List>
         {cellDatas.map((cellData, idx) =>
-          <ListItem key={idx} onClick={() => setSelectedCell(cellData)}>
+          <ListItemButton key={idx} onClick={() => setSelectedCell(cellData)} selected={cellData === selectedCell}>
             <ListItemAvatar>
               <Avatar>
                 {cellData.ok ? <CheckIcon /> : <WarningIcon />}
@@ -49,7 +50,7 @@ export default function ChatLayout() {
             <ListItemText
               primary={cellData.secret}
             />
-          </ListItem>
+          </ListItemButton>
         )}
       </List>
     </Grid>
