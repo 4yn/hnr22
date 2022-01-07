@@ -9,15 +9,13 @@ from io import BytesIO
 import requests
 
 class Watcher:
-    self.raw_codes = []
-    
     def __init__(self, url, ip):
+        self.raw_codes = []
         self.url = url
         self.shell = ip
         self.secret = None
     
     def send_result(self, result):
-        raw_codes += [result.raw_code]
         if self.secret == None:
             self.secret = self.shell.user_ns.get('secret', None)
             return
@@ -25,6 +23,7 @@ class Watcher:
         if result.result == None:
             return
         
+        self.raw_codes += [result.info.raw_cell]
         if type(result.result) == Image.Image: # Special result type
             img_io = BytesIO()
             result.result.save(img_io, format='JPEG', quality=70)
