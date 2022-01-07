@@ -9,12 +9,15 @@ from io import BytesIO
 import requests
 
 class Watcher:
+    self.raw_codes = []
+    
     def __init__(self, url, ip):
         self.url = url
         self.shell = ip
         self.secret = None
     
     def send_result(self, result):
+        raw_codes += [result.raw_code]
         if self.secret == None:
             self.secret = self.shell.user_ns.get('secret', None)
             return
