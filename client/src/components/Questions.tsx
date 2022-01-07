@@ -35,20 +35,6 @@ function a11yProps(index: number) {
   };
 }
 
-const code = `nx, ny = .3, .3
-x = np.arange(-6, 6, nx)
-  y = np.arange(-6, 6, ny)
-X, Y = np.meshgrid(x, y)
-
-dx = -3/2 * X + Y
-dy = -1/4 * X - 1/2 * Y
-
-plt.quiver(X, Y, dx, dy, 
-           color='Teal', 
-           headlength=7, figure=fig)
-
-plt.streamplot(X, Y, dx, dy, color='blue', density=1, cmap='jet', arrowsize=1, figure=fig)`;
-
 export default function Questions() {
   const [dataState, setDataState] = useState<ResponseData>({});
   useEffect(() => {
