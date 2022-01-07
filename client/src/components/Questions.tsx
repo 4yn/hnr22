@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { CellData, requestData } from "../requests";
-import DataCard from "./DataCard";
+import { getStudentData, ResponseData } from "../requests";
 import { Tab, Tabs } from "@mui/material";
 import CodeField from "./CodeField";
+import TextAnswer from "./TextAnswer";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -24,11 +23,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -55,16 +50,19 @@ plt.quiver(X, Y, dx, dy,
 plt.streamplot(X, Y, dx, dy, color='blue', density=1, cmap='jet', arrowsize=1, figure=fig)`;
 
 export default function Questions() {
-  const [dataState, setDataState] = useState<Array<CellData>>([]);
+  const [dataState, setDataState] = useState<ResponseData>({});
   useEffect(() => {
-    requestData().then((res) => setDataState(res));
+    getStudentData().then((res) => setDataState(res));
   }, []);
 
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const [tab, setTab] = useState(0);
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setTab(newValue);
   };
+
+  const [code, setCode] = useState("");
+
+  const q1 = dataState["Q1"];
 
   return (
     <Box>
@@ -72,8 +70,8 @@ export default function Questions() {
         <Box sx={{ flexGrow: 1, flexBasis: 0 }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
-              value={value}
-              onChange={handleChange}
+              value={tab}
+              onChange={handleChangeTab}
               aria-label="basic tabs example"
             >
               <Tab label="Item One" {...a11yProps(0)} />
@@ -81,17 +79,30 @@ export default function Questions() {
               <Tab label="Item Three" {...a11yProps(2)} />
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={tab} index={0}>
             <Stack spacing={2}>
-              {dataState.map((ele, index) => {
-                return <DataCard cellData={ele} key={index} />;
-              })}
+              {q1 &&
+                q1.map(({ answer, code, timestamp, student }) => (
+                  <Box
+                    key={student.name}
+                    onClick={() => {
+                      setCode(code);
+                    }}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    <TextAnswer
+                      name={student.name}
+                      answer={answer}
+                      timestamp={timestamp}
+                    />
+                  </Box>
+                ))}
             </Stack>
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={tab} index={1}>
             Item Two
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={tab} index={2}>
             Item Three
           </TabPanel>
         </Box>
