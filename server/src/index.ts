@@ -20,14 +20,19 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 const store = [...mockData];
 
 app.get("/api/data", (req, res) => {
-  res.json(store);
+  if (!!req.query && !!req.query.skip) {
+    res.json(store.slice(parseInt(req.query.skip)))
+    // console.log(typeof req.query.skip)
+  } else {
+    res.json(store);
+  }
 });
 
 app.post("/api/data", (req, res) => {
   console.log(req, req.body);
   const body: CellData = req.body;
   store.push(body);
-  console.log(store);
+  // console.log(store);
   res.send();
 });
 
