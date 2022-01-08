@@ -11,6 +11,7 @@ import axios from "axios";
 import { styled } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import WarningIcon from "@mui/icons-material/Warning";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 import Focus, { CellData } from "./Focus";
 import { Typography } from "@mui/material";
@@ -62,7 +63,7 @@ export default function ChatLayout() {
               >
                 <ListItemAvatar>
                   <Avatar>
-                    {cellData.ok ? <CheckIcon /> : <WarningIcon />}
+                    {cellData.idx === 1 ? <RefreshIcon/> : cellData.ok ? <CheckIcon /> : <WarningIcon />}
                   </Avatar>
                 </ListItemAvatar>
                 <div>
