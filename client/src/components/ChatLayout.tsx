@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import Box from "@mui/material/Box";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -16,12 +17,12 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import Focus, { CellData } from "./Focus";
 import { Typography } from "@mui/material";
 
-const ScrollableList = styled(List)(({ theme }) => {
-  return {
-    overflowY: "auto",
-    maxHeight: "75%",
-  };
-});
+// const ScrollableList = styled(List)(({ theme }) => {
+//   return {
+//     overflowY: "auto",
+//     maxHeight: "75%",
+//   };
+// });
 
 const SelectableListItemButton = styled(ListItemButton)(({ theme }) => {
   return {
@@ -36,7 +37,6 @@ export default function ChatLayout() {
   useEffect(() => {
     axios.get("/api/data").then((x) => {
       const cellDatas = x.data;
-      cellDatas.reverse();
       setCellDatas(cellDatas);
     });
   }, []);
@@ -49,36 +49,38 @@ export default function ChatLayout() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4} md={3} xl={2}>
-        <ScrollableList>
-          {cellDatas.map((cellData, index) => {
-            const date = new Date(cellData.timestamp);
-            let dateString = isNaN(date as any as number)
-              ? ""
-              : date.toLocaleTimeString();
-            return (
-              <SelectableListItemButton
-                key={`${cellData.secret} ${cellData.idx}`}
-                onClick={() => setSelectedIndex(index)}
-                selected={index === selectedIndex}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    {cellData.idx === 1 ? <RefreshIcon/> : cellData.ok ? <CheckIcon /> : <WarningIcon />}
-                  </Avatar>
-                </ListItemAvatar>
-                <div>
-                  <ListItemText primary={cellData.secret} />
-                  <Typography variant="caption" display="block" gutterBottom>
-                    <ListItemText
-                      primary={dateString}
-                      disableTypography={true}
-                    ></ListItemText>
-                  </Typography>
-                </div>
-              </SelectableListItemButton>
-            );
-          })}
-        </ScrollableList>
+        <Box style={{overflowY: "scroll", maxHeight: "75%"}}>
+          <List style={{display: "flex", flexFlow: "column-reverse nowrap"}}>
+            {cellDatas.map((cellData, index) => {
+              const date = new Date(cellData.timestamp);
+              let dateString = isNaN(date as any as number)
+                ? ""
+                : date.toLocaleTimeString();
+              return (
+                <SelectableListItemButton
+                  key={`${cellData.secret} ${cellData.idx}`}
+                  onClick={() => setSelectedIndex(index)}
+                  selected={index === selectedIndex}
+                >
+                  <ListItemAvatar>
+                    <Avatar>
+                      {cellData.idx === 1 ? <RefreshIcon/> : cellData.ok ? <CheckIcon /> : <WarningIcon />}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <div>
+                    <ListItemText primary={cellData.secret} />
+                    <Typography variant="caption" display="block" gutterBottom>
+                      <ListItemText
+                        primary={dateString}
+                        disableTypography={true}
+                      ></ListItemText>
+                    </Typography>
+                  </div>
+                </SelectableListItemButton>
+              );
+            })}
+          </List>
+        </Box>
       </Grid>
       <Grid item xs={8} md={9} xl={10}>
         {selectedIndex !== null && (
