@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import mockData from "./mocks"
+import egress from "./egress"
 
 const app = express();
 
@@ -35,6 +36,11 @@ app.post("/api/data", (req, res) => {
   // console.log(store);
   res.send();
 });
+
+app.get("/api/script", (req, res) => {
+  res.contentType("text/plain")
+  res.send(egress)
+})
 
 app.listen(process.env.PORT, () => {
   console.log("server start");
