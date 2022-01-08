@@ -44,7 +44,6 @@ class Watcher:
         self.lasterr = ""
         self.cap = self.capper.__enter__()
         self.hook = sys.displayhook
-
         
     def post_run_cell(self, result):
         # print(dir(result))
