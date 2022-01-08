@@ -41,7 +41,7 @@ export default function Main() {
                 Add this to your jupyter notebook to get <code>pynoculars</code>!
                 <br/>
                 <pre>
-                  wget https://eg.ress.me/api/script -O pynoculars.py
+                  ! wget https://eg.ress.me/api/script -O pynoculars.py
                   <br/>
                   %load_ext pynoculars
                 </pre>

@@ -13,6 +13,7 @@ import { styled } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import WarningIcon from "@mui/icons-material/Warning";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { green, red, blue } from '@mui/material/colors';
 
 import Focus, { CellData } from "./Focus";
 import { Typography } from "@mui/material";
@@ -79,7 +80,7 @@ export default function ChatLayout() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4} md={3} xl={2}>
-        <Box style={{overflowY: "scroll", maxHeight: "75%"}}>
+        <Box style={{overflowY: "auto", maxHeight: "75vh"}}>
           <List style={{display: "flex", flexFlow: "column-reverse nowrap"}}>
             {cellDatas.map((cellData, index) => {
               const date = new Date(cellData.timestamp);
@@ -93,7 +94,12 @@ export default function ChatLayout() {
                   selected={index === selectedIndex}
                 >
                   <ListItemAvatar>
-                    <Avatar>
+                    <Avatar sx={{bgcolor: (
+                      cellData.idx === 1 ? blue[500] : (
+                        cellData.ok ? green[500] : 
+                        red[500]
+                      )
+                    )}}>
                       {cellData.idx === 1 ? <RefreshIcon/> : cellData.ok ? <CheckIcon /> : <WarningIcon />}
                     </Avatar>
                   </ListItemAvatar>
@@ -113,9 +119,11 @@ export default function ChatLayout() {
         </Box>
       </Grid>
       <Grid item xs={8} md={9} xl={10}>
-        {selectedIndex !== null && (
-          <Focus cellData={cellDatas[selectedIndex]} />
-        )}
+        <Box style={{overflowY: "auto", maxHeight: "90vh"}}>
+          {selectedIndex !== null && (
+            <Focus cellData={cellDatas[selectedIndex]} />
+          )}
+        </Box>
       </Grid>
     </Grid>
   );
