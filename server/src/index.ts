@@ -23,7 +23,6 @@ const store = [...mockData];
 app.get("/api/data", (req, res) => {
   if (!!req.query && !!req.query.skip) {
     res.json(store.slice(parseInt(req.query.skip)))
-    // console.log(typeof req.query.skip)
   } else {
     res.json(store);
   }
@@ -32,6 +31,7 @@ app.get("/api/data", (req, res) => {
 app.post("/api/data", (req, res) => {
   console.log(req, req.body);
   const body: CellData = req.body;
+  body.timestamp = (new Date()).getTime().toString()
   store.push(body);
   // console.log(store);
   res.send();
