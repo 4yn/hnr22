@@ -31,7 +31,8 @@ app.get("/api/data", (req, res) => {
 app.post("/api/data", (req, res) => {
   console.log(req, req.body);
   const body: CellData = req.body;
-  body.timestamp = (new Date()).getTime().toString()
+  body.timestamp = (new Date()).toISOString()
+  console.log(body.timestamp)
   store.push(body);
   // console.log(store);
   res.send();
