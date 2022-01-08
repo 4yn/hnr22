@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent"
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Questions from "./Questions";
@@ -27,12 +29,25 @@ export default function Main() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Py-opticon
+            Pynoculars
           </Typography>
         </Toolbar>
       </AppBar>
       <main>
         <Container sx={{ py: 8 }} maxWidth="xl">
+          <Box sx={{p: 2}}>
+            <Card>
+              <CardContent>
+                Add this to your jupyter notebook to get <code>pynoculars</code>!
+                <br/>
+                <pre>
+                  wget https://eg.ress.me/api/script -O pynoculars.py
+                  <br/>
+                  %load_ext pynoculars
+                </pre>
+              </CardContent>
+            </Card>
+          </Box>
           {/* <Questions /> */}
           <ChatLayout />
         </Container>
