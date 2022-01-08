@@ -34,8 +34,8 @@ export default function Main() {
         </Toolbar>
       </AppBar>
       <main>
-        <Container sx={{ py: 8 }} maxWidth="xl">
-          <Box sx={{p: 2}}>
+        <Container sx={{ py: 2 }} maxWidth="xl">
+          <Box sx={{pb: 2}}>
             <Card>
               <CardContent>
                 Add this to your jupyter notebook to get <code>pynoculars</code>!

@@ -34,12 +34,42 @@ export default function ChatLayout() {
   const [cellDatas, setCellDatas] = useState<Array<CellData>>([]);
   // const selectedCell = useRef<CellData | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const [firstFetched, setFirstFetched] = useState<bool>(false);
+
   useEffect(() => {
     axios.get("/api/data").then((x) => {
       const cellDatas = x.data;
       setCellDatas(cellDatas);
+      setFirstFetched(true);
     });
   }, []);
+
+  useEffect(() => {
+    if (firstFetched) {
+      var id: any = null;
+      const refetch = () => {
+        console.log("refetching");
+        axios.get("/api/data", {
+          params: {
+            skip: cellDatas.length
+          }
+        }).then((x) => {
+          const newCellDatas = x.data;
+          if (newCellDatas.length) {
+            setCellDatas([
+              ...cellDatas,
+              ...newCellDatas
+            ])
+          }
+          id = setTimeout(refetch, 3000)
+        })
+      }
+
+      id = setTimeout(refetch, 3000);
+      return () => clearTimeout(id);
+    }
+  }, [cellDatas.length, firstFetched]);
 
   // useEffect(() => {
   //   selectedIndex !== null && (selectedCell.current = cellDatas[selectedIndex]);
