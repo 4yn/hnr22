@@ -38,13 +38,23 @@ export default function Main() {
           <Box sx={{pb: 2}}>
             <Card>
               <CardContent>
-                Add this to your jupyter notebook to get <code>pynoculars</code>!
-                <br/>
+                <p>Add this to your jupyter notebook to get <code>pynoculars</code>!</p>
                 <pre>
                   ! wget https://eg.ress.me/api/script -O pynoculars.py
                   <br/>
                   %load_ext pynoculars
                 </pre>
+                <details>
+                  <summary>Are you using google colab?</summary>
+                  <p>Google colab is a bit outdated, run this (before the above) to upgrade and restart the notebook for your pynoculars to work!</p>
+                  <pre>
+                  !pip install -q --upgrade ipython <br/>
+                  !pip install -q --upgrade ipykernel <br/>
+                  import os <br/>
+                  import signal <br/>
+                  os.kill(os.getpid(), signal.SIGTERM) <br/>
+                  </pre>
+                </details>
               </CardContent>
             </Card>
           </Box>

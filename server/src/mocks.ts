@@ -218,4 +218,7 @@ const mockStore: Array<CellData> = [
   },
 ];
 
-export default mockStore;
+const emptyMock: Array<CellData> =[]
+
+// export default mockStore;
+export default emptyMock;

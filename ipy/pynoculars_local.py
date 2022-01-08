@@ -1,4 +1,3 @@
-const egress =`
 import types
 import sys
 
@@ -10,6 +9,7 @@ import requests
 
 from PIL import Image
 from matplotlib.figure import Figure
+from IPython.display import display
 from IPython.utils.capture import capture_output, RichOutput
 
 class Watcher:
@@ -19,7 +19,8 @@ class Watcher:
 
         # Session data
         self.url = url
-        self.secret = input("Username:")
+        # self.secret = input("Username:")
+        self.secret = "ok"
         # self.secret = None
 
         # History
@@ -36,7 +37,7 @@ class Watcher:
             self.shell._showtraceback_orig = self.shell._showtraceback
             watcher_self = self
             def hook_showtraceback(self, etype, evalue, stb):
-                lasterr = self.InteractiveTB.stb2text(stb) + '\\n'
+                lasterr = self.InteractiveTB.stb2text(stb) + '\n'
                 watcher_self.lasterr = lasterr
                 self._showtraceback_orig(etype, evalue, stb)
             self.shell._showtraceback = types.MethodType(hook_showtraceback, self.shell)
@@ -75,9 +76,9 @@ class Watcher:
         })
 
     def egress(self, data):
-        # print(str(data)[:1000])
-        # print(str(data))
-        requests.post(self.url, json=data)
+        # requests.post(self.url, json=data)
+        print(data)
+        pass
 
 def load_ipython_extension(ip):
     watcher = Watcher("https://eg.ress.me/api/data", ip)
@@ -86,6 +87,3 @@ def load_ipython_extension(ip):
 
 def unload_ipython_extension(ip):
     pass
-`
-
-export default egress;
