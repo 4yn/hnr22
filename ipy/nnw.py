@@ -5,6 +5,8 @@ import base64
 
 from io import BytesIO
 
+import datetime
+
 import requests
 
 from PIL import Image
@@ -61,7 +63,8 @@ class Watcher:
             "ok": cell_ok,
             "stdout": self.cap.stdout,
             "stderr": self.cap.stderr + self.lasterr,
-            "outputs": [i.data for i in self.cap.outputs]
+            "outputs": [i.data for i in self.cap.outputs],
+            "timestamp": datetime.now()
         })
 
     def egress(self, data):

@@ -15,7 +15,8 @@ interface CellData {
   ok: boolean;
   stdout: string;
   stderr: string;
-  outputs: Array<Map<string, string>>;
+  outputs: Array<Record<string, string>>;
+  timestamp: string;
 }
 
 export { CellData };

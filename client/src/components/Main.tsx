@@ -34,7 +34,7 @@ export default function Main() {
       <main>
         <Container sx={{ py: 8 }} maxWidth="xl">
           {/* <Questions /> */}
-          <ChatLayout/>
+          <ChatLayout />
         </Container>
       </main>
       {/* Footer */}
